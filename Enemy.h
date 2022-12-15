@@ -5,7 +5,12 @@ class Enemy {
   
   public:
   
-    int numberOfEnemies;
+    int enemyX;
+    int enemyY;
+
+    Enemy(int x, int y);
+
+    void moveLeft();
   
 };
 

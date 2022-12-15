@@ -27,6 +27,8 @@ class Game {
     // player's position in index j notation
     int playerX;
 
+    
+
 
 };
 #endif

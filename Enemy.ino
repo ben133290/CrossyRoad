@@ -1,3 +1,14 @@
 #include "Enemy.h"
 
-int Enemy::numberOfEnemies = 0;
+Enemy::Enemy(int x, int y) {
+
+  enemyX = x;
+  enemyY = y;
+
+}
+
+void Enemy::moveLeft() {
+  if (enemyX != 0) {
+    enemyX = enemyX - 1;
+  }
+}

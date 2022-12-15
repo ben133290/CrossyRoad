@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Enemy.h"
 
 
 // creates the game object and sets the initial position for the player
@@ -19,6 +20,7 @@ void Game::updateGameMatrix() {
     }
   }
   gameMatrix[playerY][playerX] = 1;
+  
 
 }
 
@@ -39,4 +41,3 @@ void Game::printMatrix() {
     Serial.println();
   }
 }
-
