@@ -2,7 +2,7 @@
 #include "Enemy.h"
 
 String inString = "";  // string to hold input
-Game game;
+Game game = Game();
 
 void setup() {
   // Open serial communications and wait for port to open:
@@ -11,11 +11,10 @@ void setup() {
   // send an intro:
   Serial.println("Welcome to the serial monitor version of Crossy Road!");
   Serial.println();
-  game.printMatrix();
   Serial.println();
   game.playerStepUp();
-  game.updateGameMatrix();
-  game.printMatrix();
+  Serial.println();
+  game.playerStepUp();
 
 }
 

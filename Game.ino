@@ -7,6 +7,10 @@ Game::Game() {
   playerY = 30;
   playerX = 15;
   playerMatrixPosUpdate();
+  int enemyStartingYs[] = {1, 4, 6, 8, 11, 15, 19, 23, 26, 29};
+  for (int i = 0; i < 10; i++) {
+    enemies[i] = Enemy(i, enemyStartingYs[i]);
+  }
 
 }
 
@@ -29,6 +33,7 @@ void Game::updateGameMatrix() {
   // sets the 4x4 player to 1
   playerMatrixPosUpdate();
   for (Enemy enemy: enemies) {
+    Serial.println("was called");
     gameMatrix[enemy.enemyY][enemy.enemyX] = 2;
   }
 
@@ -37,7 +42,11 @@ void Game::updateGameMatrix() {
 // makes player step up one square by moving enemies down
 void Game::playerStepUp() {
 
-  for (Enemy enemy : enemies) { enemy.enemyY++; }
+  for (Enemy enemy : enemies) { 
+    enemy.enemyY = enemy.enemyY + 1; 
+  }
+  updateGameMatrix();
+  printMatrix();
 
 }
 
