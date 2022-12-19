@@ -8,9 +8,12 @@ class Enemy {
     int enemyX;
     int enemyY;
 
+    Enemy();
+
     Enemy(int x, int y);
 
     void moveLeft();
+    void moveRight();
   
 };
 

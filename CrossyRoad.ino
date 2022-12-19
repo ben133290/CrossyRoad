@@ -1,4 +1,5 @@
 #include "Game.h"
+#include "Enemy.h"
 
 String inString = "";  // string to hold input
 Game game;
