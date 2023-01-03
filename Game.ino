@@ -9,7 +9,11 @@ Game::Game() {
   playerMatrixPosUpdate();
   int enemyStartingYs[] = {1, 4, 6, 8, 11, 15, 19, 23, 26, 29};
   for (int i = 0; i < 10; i++) {
-    enemies[i] = Enemy(i, enemyStartingYs[i]);
+    // is object still existing in array after ctor
+    //enemies[i] = Enemy(i, enemyStartingYs[i]);
+
+    enemies[i].setX(i);
+    enemies[i].setY(enemyStartingYs[i]);
   }
 
 }
@@ -32,9 +36,14 @@ void Game::updateGameMatrix() {
   }
   // sets the 4x4 player to 1
   playerMatrixPosUpdate();
-  for (Enemy enemy: enemies) {
-    Serial.println("was called");
-    gameMatrix[enemy.enemyY][enemy.enemyX] = 2;
+  for (int k = 0; k < 10; k++) {
+    // temp for debug
+    Serial.println(enemies[k].getY());
+    Serial.println(enemies[k].getX());
+    Serial.println();
+    
+    gameMatrix[enemies[k].getY()][enemies[k].getX()] = 2;
+    
   }
 
 }
@@ -42,9 +51,14 @@ void Game::updateGameMatrix() {
 // makes player step up one square by moving enemies down
 void Game::playerStepUp() {
 
-  for (Enemy enemy : enemies) { 
-    enemy.enemyY = enemy.enemyY + 1; 
+  // use iteration by index (does this copy the array?!)
+  for (int i = 0; i < 10; i++) { 
+    //enemy.enemyY = enemy.enemyY + 1;
+    // use inc func in objec instead of accessing fields???
+    enemies[i].incY();
   }
+
+  // 
   updateGameMatrix();
   printMatrix();
 

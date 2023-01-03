@@ -30,3 +30,23 @@ void Enemy::moveRight() {
   if (enemyY > 30) { enemyY = 0; }
 
 }
+
+void Enemy::setX(int x) {
+  enemyX = x;
+}
+
+void Enemy::setY(int y) {
+  enemyX = y;
+}
+
+int Enemy::getX() {
+  return enemyX;
+}
+
+int Enemy::getY() {
+  return enemyY;
+}
+
+void Enemy::incY() {
+  enemyY++;
+}

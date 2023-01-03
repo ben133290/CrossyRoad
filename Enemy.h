@@ -4,9 +4,12 @@
 class Enemy {
   
   public:
-  
-    int enemyX;
-    int enemyY;
+
+    void setX(int x);
+    void setY(int y);
+
+    int getX();
+    int getY();
 
     Enemy();
 
@@ -14,6 +17,13 @@ class Enemy {
 
     void moveLeft();
     void moveRight();
+
+    void incY();
+
+  private:
+
+    int enemyX;
+    int enemyY;
   
 };
 
