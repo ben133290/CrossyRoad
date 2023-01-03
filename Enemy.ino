@@ -36,7 +36,7 @@ void Enemy::setX(int x) {
 }
 
 void Enemy::setY(int y) {
-  enemyX = y;
+  enemyY = y;
 }
 
 int Enemy::getX() {

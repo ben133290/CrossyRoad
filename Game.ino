@@ -9,9 +9,6 @@ Game::Game() {
   playerMatrixPosUpdate();
   int enemyStartingYs[] = {1, 4, 6, 8, 11, 15, 19, 23, 26, 29};
   for (int i = 0; i < 10; i++) {
-    // is object still existing in array after ctor
-    //enemies[i] = Enemy(i, enemyStartingYs[i]);
-
     enemies[i].setX(i);
     enemies[i].setY(enemyStartingYs[i]);
   }
@@ -37,10 +34,6 @@ void Game::updateGameMatrix() {
   // sets the 4x4 player to 1
   playerMatrixPosUpdate();
   for (int k = 0; k < 10; k++) {
-    // temp for debug
-    Serial.println(enemies[k].getY());
-    Serial.println(enemies[k].getX());
-    Serial.println();
     
     gameMatrix[enemies[k].getY()][enemies[k].getX()] = 2;
     
@@ -53,15 +46,13 @@ void Game::playerStepUp() {
 
   // use iteration by index (does this copy the array?!)
   for (int i = 0; i < 10; i++) { 
-    //enemy.enemyY = enemy.enemyY + 1;
-    // use inc func in objec instead of accessing fields???
     enemies[i].incY();
   }
 
-  // 
+  
   updateGameMatrix();
   printMatrix();
-
+  //printEnemiesPos();
 }
 
 // prints out the game matrix on the serial monitor
@@ -73,4 +64,16 @@ void Game::printMatrix() {
     }
     Serial.println();
   }
+}
+
+// prints out positions of all enemies in the game to serial monitor for debugging
+void Game::printEnemiesPos() {
+  for (int i = 0; i < 10; i++) {
+    Serial.print("(");
+    Serial.print(enemies[i].getX());
+    Serial.print(", ");
+    Serial.print(enemies[i].getY());
+    Serial.print(")   ");
+  }
+  Serial.println();
 }

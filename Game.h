@@ -10,6 +10,9 @@ class Game {
     // updates all the values in the game Matrix
     void updateGameMatrix();
 
+    // prints out positions of all enemies in the game to serial monitor
+    void printEnemiesPos();
+
     // call this method when the button for moving up is pressed
     void playerStepUp();
 
