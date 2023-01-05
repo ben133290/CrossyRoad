@@ -9,7 +9,7 @@ Game::Game() {
   playerMatrixPosUpdate();
   int enemyStartingYs[] = {1, 4, 6, 8, 11, 15, 19, 23, 26, 29};
   for (int i = 0; i < 10; i++) {
-    enemies[i].setX(i);
+    enemies[i].setX(i * 7 % 32);
     enemies[i].setY(enemyStartingYs[i]);
   }
 
@@ -48,10 +48,8 @@ void Game::playerStepUp() {
   for (int i = 0; i < 10; i++) { 
     enemies[i].incY();
   }
-
-  
   updateGameMatrix();
-  printMatrix();
+  //printMatrix();
   //printEnemiesPos();
 }
 
@@ -64,6 +62,11 @@ void Game::printMatrix() {
     }
     Serial.println();
   }
+}
+
+// returns the value of the matrix at the given cordinates
+int Game::getValueAtPos(int x, int y) {
+  return gameMatrix[y][x];
 }
 
 // prints out positions of all enemies in the game to serial monitor for debugging

@@ -19,6 +19,9 @@ class Game {
     // prints the game matrix to the serial monitor
     void printMatrix();
 
+    // returns the value of the matrix at the given cordinates
+    int getValueAtPos(int x, int y);
+
     // there should only be one instance of the game class in use
     Game();
 
