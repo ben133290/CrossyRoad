@@ -3,25 +3,34 @@
 
 // creates the game object and sets the initial position for the player
 Game::Game() {
-  
+  isFirstTurn = true;
+  isGameOver = false;
   playerY = 30;
   playerX = 15;
   playerMatrixPosUpdate();
-  int enemyStartingYs[] = {1, 29, 8, 6, 11, 19, 15, 23, 26, 4};
+  int enemyStartingYs[] = {0, 28, 8, 6, 19, 11, 15, 22, 25, 4};
+  int enemyColors[] = {2, 2, 2, 2, 2, 3, 3, 3, 3, 3};
   for (int i = 0; i < 10; i++) {
     enemies[i].setX(i * 7 % 32);
     enemies[i].setY(enemyStartingYs[i]);
+    enemies[i].setColor(enemyColors[i]);
   }
   updateGameMatrix();
+}
+
+int Game::positiveModulo(int i, int n) {
+  return (n + (i % n)) % n;
 }
 
 // i don't think this requires much doc it's just a repeated code fragment that I wanted to have in a seperate method
 void Game::playerMatrixPosUpdate() {
   gameMatrix[playerY][playerX] = 1;
   gameMatrix[playerY][(playerX+1)%32] = 1;
-  gameMatrix[(playerY+1)%32][(playerX+1)%32] = 1;
+  gameMatrix[playerY][positiveModulo(playerX-1, 32)] = 1;
   gameMatrix[(playerY+1)%32][playerX] = 1;
 }
+
+bool Game::getGameOver() { return isGameOver; }
 
 // resets game matrix to all zeros and then places all entities 
 void Game::updateGameMatrix() {
@@ -34,8 +43,14 @@ void Game::updateGameMatrix() {
   // sets the 4x4 player to 1
   playerMatrixPosUpdate();
   for (int k = 0; k < 10; k++) {
-    
-    gameMatrix[enemies[k].getY()][enemies[k].getX()] = 2;
+    if (gameMatrix[enemies[k].getY()][enemies[k].getX()] == 1) {
+      Serial.println("GAME OVER");
+      isGameOver = true; 
+    }
+    else {
+      gameMatrix[enemies[k].getY()][enemies[k].getX()] = enemies[k].getColor();
+      gameMatrix[enemies[k].getY()][(enemies[k].getX()+1)%32] = enemies[k].getColor();
+    }
     
   }
 
@@ -44,13 +59,29 @@ void Game::updateGameMatrix() {
 // makes player step up one square by moving enemies down
 void Game::playerStepUp() {
 
-  // use iteration by index (does this copy the array?!)
-  for (int i = 0; i < 10; i++) { 
-    enemies[i].incY();
+  if (isFirstTurn) {
+    playerY--;
+    isFirstTurn = false;
+  } else {
+    // use iteration by index (does this copy the array?!)
+    for (int i = 0; i < 10; i++) { 
+      enemies[i].incY();
+    }
   }
   updateGameMatrix();
-  //printMatrix();
-  //printEnemiesPos();
+}
+
+// makes player step up one square right
+void Game::playerStepRight() {
+  playerX = (playerX + 1) % 32;
+  updateGameMatrix();
+}
+
+// makes player step up one square right
+void Game::playerStepLeft() {
+  playerX--;
+  if (playerX == -1) { playerX = 31; }
+  updateGameMatrix();
 }
 
 void Game::shiftEnemies() {

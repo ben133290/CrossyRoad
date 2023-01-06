@@ -7,9 +7,11 @@ class Enemy {
 
     void setX(int x);
     void setY(int y);
+    void setColor(int color);
 
     int getX();
     int getY();
+    int getColor();
 
     Enemy();
 
@@ -24,6 +26,7 @@ class Enemy {
 
   private:
 
+    int carColor;
     int enemyX;
     int enemyY;
   

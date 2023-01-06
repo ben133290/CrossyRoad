@@ -7,8 +7,9 @@ class Game {
 
   public:
 
-    // gets set to true if player collides with an enemy
-    bool isGameOver = false;
+    bool checkIfCollision();
+
+    bool getGameOver();
 
     // updates all the values in the game Matrix
     void updateGameMatrix();
@@ -18,6 +19,12 @@ class Game {
 
     // call this method when the button for moving up is pressed
     void playerStepUp();
+
+    // call this method when the button for moving right is pressed
+    void playerStepRight();
+
+    // call this method when the button for moving left is pressed
+    void playerStepLeft();
 
     // prints the game matrix to the serial monitor
     void printMatrix();
@@ -31,6 +38,13 @@ class Game {
     Game();
 
   private:
+
+    int isFirstTurn;
+
+    int positiveModulo(int i, int n);
+
+    // gets set to true if player collides with an enemy
+    bool isGameOver;
 
     void playerMatrixPosUpdate();
 
