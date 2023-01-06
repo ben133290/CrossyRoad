@@ -19,6 +19,8 @@ class Enemy {
     void moveRight();
 
     void incY();
+    void incX();
+    void decX();
 
   private:
 

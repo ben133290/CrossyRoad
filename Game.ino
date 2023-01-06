@@ -7,12 +7,12 @@ Game::Game() {
   playerY = 30;
   playerX = 15;
   playerMatrixPosUpdate();
-  int enemyStartingYs[] = {1, 4, 6, 8, 11, 15, 19, 23, 26, 29};
+  int enemyStartingYs[] = {1, 29, 8, 6, 11, 19, 15, 23, 26, 4};
   for (int i = 0; i < 10; i++) {
     enemies[i].setX(i * 7 % 32);
     enemies[i].setY(enemyStartingYs[i]);
   }
-
+  updateGameMatrix();
 }
 
 // i don't think this requires much doc it's just a repeated code fragment that I wanted to have in a seperate method
@@ -51,6 +51,16 @@ void Game::playerStepUp() {
   updateGameMatrix();
   //printMatrix();
   //printEnemiesPos();
+}
+
+void Game::shiftEnemies() {
+  for (int i = 0; i < 10; i = i = i + 2) { 
+    enemies[i].incX();
+  }
+  for (int i = 1; i < 10; i = i = i + 2) { 
+    enemies[i].decX();
+  }
+  updateGameMatrix();
 }
 
 // prints out the game matrix on the serial monitor

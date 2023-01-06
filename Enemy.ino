@@ -48,5 +48,13 @@ int Enemy::getY() {
 }
 
 void Enemy::incY() {
-  enemyY++;
+  enemyY = (enemyY + 1) % 32;
+}
+
+void Enemy::incX() {
+  enemyX = (enemyX + 1) % 32;
+}
+
+void Enemy::decX() {
+  enemyX = (enemyX - 1) % 32;
 }

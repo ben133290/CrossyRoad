@@ -27,11 +27,14 @@ void updateLEDS() {
   unsigned char x, y;
   for(y=0; y<matrix.height(); y++) {
     for(x=0; x<matrix.width(); x++) {
+      if (game.getValueAtPos(x, y) == 0) {
+        matrix.drawPixel(x, y, matrix.Color333(0, 0, 0));
+      }
       if (game.getValueAtPos(x, y) == 1) {
-        matrix.drawPixel(x, y, matrix.Color333(0, 7, 7));
+        matrix.drawPixel(x, y, matrix.Color333(15, 15, 0));
       }
       if (game.getValueAtPos(x, y) == 2) {
-        matrix.fillRect(x, y, 4, 2, matrix.Color333(7, 0, 0));
+        matrix.drawPixel(x, y, matrix.Color333(15, 0, 0));
       }
     }
   }
@@ -41,40 +44,42 @@ void setup() {
   // Open serial communications and wait for port to open:
   Serial.begin(500000);
   matrix.begin();
-
   // send an intro:
   Serial.println("Welcome to the serial monitor version of Crossy Road!");
   Serial.println();
   Serial.println();
-  game.playerStepUp();
-  Serial.println();
-  game.playerStepUp();
+  //game.playerStepUp();
 
 }
 
-#define FPS 4         // Maximum frames-per-second
+#define FPS 32 // framerate
+#define enemySpeed 1 // number of frames for one jump
 uint32_t prevTime = 0; // For frame-to-frame interval timing
 bool updated = false;
+uint32_t t = 0;
 
 
 void loop() {
 
-  uint32_t t;
-  while(((t = millis()) - prevTime) < (1000 / FPS));
-  prevTime = t;
-
-  //display uf led
   updateLEDS();
+
+  t = millis();
+  if (t - prevTime > enemySpeed * (1000 / FPS)) { 
+  game.shiftEnemies();
+  prevTime = t;
+  }
+  
 
   if(Serial.available()) // if there is data comming
   {
     String command = Serial.readStringUntil('\n'); // read string until meet newline character
 
-    if(command == "UP")
-    {
+    if (command == "u") {
       game.playerStepUp();
       Serial.println("LED is turned ON"); // send action to Serial Monitor
     }
+    if (command == "e") { 
+      game.shiftEnemies(); }
   }
 
 }

@@ -7,6 +7,9 @@ class Game {
 
   public:
 
+    // gets set to true if player collides with an enemy
+    bool isGameOver = false;
+
     // updates all the values in the game Matrix
     void updateGameMatrix();
 
@@ -21,6 +24,8 @@ class Game {
 
     // returns the value of the matrix at the given cordinates
     int getValueAtPos(int x, int y);
+
+    void shiftEnemies();
 
     // there should only be one instance of the game class in use
     Game();
