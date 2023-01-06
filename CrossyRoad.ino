@@ -74,6 +74,31 @@ void displayGameOver() {
   matrix.setTextColor(matrix.Color333(0,7,2));
   matrix.setCursor(1, 12);
   matrix.print(score);
+  matrix.setCursor(1, 22);
+  if (score <= 25) { 
+    matrix.setTextColor(matrix.Color333(7,0,0));
+    matrix.print("Bad!");
+    }
+  if (score > 25 && score <= 50 ) { 
+    matrix.setTextColor(matrix.Color333(0,0,7));
+    matrix.print("OK!");
+    }
+  if (score > 50 && score <= 75) {
+    matrix.setTextColor(matrix.Color333(0,7,0));
+    matrix.print("Nice!");
+  }
+  if (score > 75) {
+    matrix.setTextColor(matrix.Color333(0,7,0));
+    matrix.print('G');
+    matrix.setTextColor(matrix.Color333(7,7,0));
+    matrix.print('R');
+    matrix.setTextColor(matrix.Color333(7,0,0));
+    matrix.print('E');
+    matrix.setTextColor(matrix.Color333(7,0,7));
+    matrix.print('A');
+    matrix.setTextColor(matrix.Color333(0,0,7));
+    matrix.print('T');
+  }
   delay(10000);
   matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
 }
@@ -105,7 +130,7 @@ void displayIntro() {
   matrix.print("Cross the ");
   matrix.setCursor(1, 20);
   matrix.print("Road!");
-  delay(4000);
+  delay(1000);
 
   //display Chicken
   matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
@@ -116,7 +141,7 @@ void displayIntro() {
   matrix.drawPixel(16, 31, matrix.Color333(15, 15, 0));
   matrix.drawLine(6, 19, 7, 19, matrix.Color333(15, 15, 0));
   matrix.drawPixel(7, 20, matrix.Color333(15, 0, 0));
-  delay(6000);  
+  delay(1000);  
 }
 
 void setup() {
