@@ -23,6 +23,7 @@ RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false);
 String inString = "";  // string to hold input
 Game game = Game();
 int score = 0;
+int colorSpeed = 0;
 
 void updateLEDS() {
   unsigned char x, y;
@@ -36,13 +37,13 @@ void updateLEDS() {
         matrix.drawPixel(x, y, matrix.Color333(15, 15, 5));
       }
       if (value == 2) {
-        matrix.drawPixel(x, y, matrix.Color333(15, 0, 0));
+        matrix.drawPixel(x, y, matrix.Color333(15, 0, colorSpeed));
       }
       if (value == 3) {
-        matrix.drawPixel(x, y, matrix.Color333(0, 0, 15));
+        matrix.drawPixel(x, y, matrix.Color333(0, colorSpeed, 15));
       }
       if (value == 4) {
-        matrix.drawPixel(x, y, matrix.Color333(1, 0, 1));
+        matrix.drawPixel(x, y, matrix.Color333(1, 0, 0));
       }
       if (value == 5) {
         matrix.drawPixel(x, y, matrix.Color333(15, 15, 0));
@@ -199,6 +200,11 @@ void loop() {
   }
 
   enemySpeed = 16 + (score / 10);
+  if (score / 10 < 15) {
+    colorSpeed = score / 10;
+  } else {
+    colorSpeed = 15;
+  }
 
 }
 
