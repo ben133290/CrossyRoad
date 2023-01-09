@@ -5,7 +5,7 @@
 Game::Game() {
   //1 for right -1 for left
   playerOrientation = 1;
-  isFirstTurn = true;
+  isFirstTurn = 1;
   isGameOver = false;
   playerY = 30;
   playerX = 15;
@@ -63,9 +63,9 @@ void Game::updateGameMatrix() {
 // makes player step up one square by moving enemies down
 void Game::playerStepUp() {
 
-  if (isFirstTurn) {
+  if (isFirstTurn < 13) {
     playerY--;
-    isFirstTurn = false;
+    isFirstTurn++;
   } else {
     // use iteration by index (does this copy the array?!)
     for (int i = 0; i < 10; i++) { 
