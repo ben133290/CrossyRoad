@@ -18,6 +18,10 @@
 #define C   A2
 #define D   A3
 
+#define ButtonU 11
+#define ButtonL 12
+#define ButtonR 13
+
 RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false);
 
 String inString = "";  // string to hold input
@@ -145,7 +149,31 @@ void displayIntro() {
   delay(1000);  
 }
 
+bool buttonUpWasPressed = false;
+bool buttonRWasPressed = false;
+bool buttonLWasPressed = false;
+
+void buttonUp() {
+  buttonUpWasPressed = true;
+}
+
+void buttonR() {
+  buttonRWasPressed = true;
+}
+
+void buttonL() {
+  buttonLWasPressed = true;
+}
+
 void setup() {
+  // sets up physical buttons by assigning interupt functions
+  pinMode(ButtonU, INPUT_PULLUP);
+  pinMode(ButtonR, INPUT_PULLUP);
+  pinMode(ButtonL, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(ButtonU), buttonUp, FALLING);
+  attachInterrupt(digitalPinToInterrupt(ButtonR), buttonR, FALLING);
+  attachInterrupt(digitalPinToInterrupt(ButtonL), buttonL, FALLING);
+  
   // Open serial communications and wait for port to open:
   Serial.begin(2000000);
   matrix.begin();
@@ -153,7 +181,7 @@ void setup() {
   Serial.println("Welcome to the serial monitor version of Crossy Road!");
   Serial.println();
   Serial.println();
-
+  
   displayIntro();
   //game.playerStepUp();
 
@@ -192,6 +220,22 @@ void loop() {
     }
   }
 
+  // this section replicates the behaviour of the serial monitor input with the interrupts of the physical buttons
+  if (buttonUpWasPressed) {
+    game.playerStepUp();
+    score++;
+    buttonUpWasPressed = false;
+  }
+  if (buttonLWasPressed) { 
+    game.playerStepRight();
+    buttonLWasPressed = false;
+  }
+  if (buttonRWasPressed) {
+    game.playerStepLeft();
+    buttonRWasPressed = false;
+  }
+
+  // what happens when game over 
   if(game.getGameOver()) {
     displayGameOver();
     Serial.println("GameOver!");
@@ -199,9 +243,10 @@ void loop() {
     exit(0);
   }
 
-  enemySpeed = 16 + (score / 10);
+  // gradually increments speed of enemies as player gets further
+  enemySpeed = 14 + (score / 10);
   if (score / 10 < 15) {
-    colorSpeed = score / 10;
+    colorSpeed = score / 15;
   } else {
     colorSpeed = 15;
   }
