@@ -38,7 +38,7 @@ void updateLEDS() {
         matrix.drawPixel(x, y, matrix.Color333(0, 0, 0));
       }
       if (value == 1) {
-        matrix.drawPixel(x, y, matrix.Color333(15, 15, 5));
+        matrix.drawPixel(x, y, matrix.Color333(15, 15, 15));
       }
       if (value == 2) {
         matrix.drawPixel(x, y, matrix.Color333(15, 0, colorSpeed));
@@ -92,7 +92,7 @@ void displayGameOver() {
     matrix.setTextColor(matrix.Color333(0,7,0));
     matrix.print("Nice!");
   }
-  if (score > 75) {
+  if (score > 75 && score <= 100) {
     matrix.setTextColor(matrix.Color333(0,7,0));
     matrix.print('G');
     matrix.setTextColor(matrix.Color333(7,7,0));
@@ -103,6 +103,17 @@ void displayGameOver() {
     matrix.print('A');
     matrix.setTextColor(matrix.Color333(0,0,7));
     matrix.print('T');
+  }
+  if (score > 100) {
+    matrix.setTextColor(matrix.Color333(7,7,0));
+    delay(1000);
+    matrix.print('G');
+    delay(1000);
+    matrix.print('O');
+    delay(1000);
+    matrix.print('D');
+    delay(1000);
+    matrix.print('!');
   }
   delay(10000);
   matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
@@ -244,7 +255,7 @@ void loop() {
   }
 
   // gradually increments speed of enemies as player gets further
-  enemySpeed = 14 + (score / 10);
+  enemySpeed = 12 + (score / 10);
   if (score / 10 < 15) {
     colorSpeed = score / 15;
   } else {
