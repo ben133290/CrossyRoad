@@ -88,11 +88,15 @@ void displayGameOver() {
     matrix.setTextColor(matrix.Color333(0,0,7));
     matrix.print("OK!");
     }
-  if (score > 50 && score <= 75) {
+  if (score > 50 && score <= 100) {
     matrix.setTextColor(matrix.Color333(0,7,0));
-    matrix.print("Nice!");
+    if (score == 69) {
+      matrix.print("Nice!")
+    } else {
+      matrix.print("Good!");
+    }
   }
-  if (score > 75 && score <= 100) {
+  if (score > 100 && score <= 150) {
     matrix.setTextColor(matrix.Color333(0,7,0));
     matrix.print('G');
     matrix.setTextColor(matrix.Color333(7,7,0));
@@ -104,7 +108,27 @@ void displayGameOver() {
     matrix.setTextColor(matrix.Color333(0,0,7));
     matrix.print('T');
   }
-  if (score > 100) {
+  if (score > 150 && score <= 200) {
+    matrix.setTextColor(matrix.Color333(0,7,0));
+    matrix.print("Party");
+    delay(500);
+    matrix.setCursor(1, 22);
+    matrix.setTextColor(matrix.Color333(7,7,0));
+    matrix.print("Party");
+    delay(500);
+    matrix.setCursor(1, 22);
+    matrix.setTextColor(matrix.Color333(7,0,0));
+    matrix.print("Party");
+    delay(500);
+    matrix.setCursor(1, 22);
+    matrix.setTextColor(matrix.Color333(7,0,7));
+    matrix.print("Party");
+    delay(500);
+    matrix.setCursor(1, 22);
+    matrix.setTextColor(matrix.Color333(0,0,7));
+    matrix.print("Party");
+  }
+  if (score > 200) {
     matrix.setTextColor(matrix.Color333(7,7,0));
     delay(1000);
     matrix.print('G');
