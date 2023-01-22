@@ -1,3 +1,8 @@
+#include <Adafruit_BusIO_Register.h>
+#include <Adafruit_I2CDevice.h>
+#include <Adafruit_I2CRegister.h>
+#include <Adafruit_SPIDevice.h>
+
 #include "Game.h"
 #include "Enemy.h"
 #include <RGBmatrixPanel.h>
@@ -91,7 +96,7 @@ void displayGameOver() {
   if (score > 50 && score <= 100) {
     matrix.setTextColor(matrix.Color333(0,7,0));
     if (score == 69) {
-      matrix.print("Nice!")
+      matrix.print("Nice!");
     } else {
       matrix.print("Good!");
     }
