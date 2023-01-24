@@ -52,6 +52,9 @@ void updateLEDS() {
       if (value == 5) {
         matrix.drawPixel(x, y, matrix.Color333(15, 15, 0));
       }
+      if (value == 6) {
+        matrix.drawPixel(x, y, matrix.Color333(0, 15, 1 * (score % 2));
+      }
     }
   }
 }

@@ -7,9 +7,14 @@ class Game {
 
   public:
 
+    bool playerIsImmune();
+
     bool checkIfCollision();
 
     bool getGameOver();
+
+    // holds the amount of score bonus collected in the run, gets added to score at gameover
+    int scoreBonus;
 
     // updates all the values in the game Matrix
     void updateGameMatrix();
@@ -50,6 +55,9 @@ class Game {
 
     // this array contains all enemies on the board
     Enemy enemies[10];
+
+    // this is the bonus that can be collected to gain bonus points
+    Enemy bonus;
 
     // the game matrix is the matrix containing 0 where nothing, 1 where player, and 2 where enemy
     int gameMatrix[32][32];

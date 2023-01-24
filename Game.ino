@@ -1,9 +1,12 @@
 #include "Game.h"
+#include <cstdlib>
 
 
 // creates the game object and sets the initial position for the player
 Game::Game() {
   //1 for right -1 for left
+  playerIsImmune = 0;
+  scoreBonus = 0;
   playerOrientation = 1;
   isFirstTurn = 1;
   isGameOver = false;
@@ -17,6 +20,9 @@ Game::Game() {
     enemies[i].setY(enemyStartingYs[i]);
     enemies[i].setColor(enemyColors[i]);
   }
+  bonus.setColor(6);
+  bonus.setX(rand() % 32);
+  bonus.setY(0);
   updateGameMatrix();
 }
 
@@ -44,8 +50,20 @@ void Game::updateGameMatrix() {
       gameMatrix[i][j] = 0;
     }
   }
-  // sets the 4x4 player to 1
+  // sets the player pixels
   playerMatrixPosUpdate();
+
+  // bonus update
+  if (gameMatrix[bonus.getY()][bonus.getX()] == 1 || gameMatrix[bonus.getY()][bonus.getX()] == 5) {
+    // add to score
+    scoreBonus = scoreBonus + 5;
+    bonus.setX(rand() % 32);
+    bonus.setY(0);
+  }
+  // show bonus
+  gameMatrix[bonus.getY()][bonus.getX()] = bonus.getColor();
+
+  // show enemies
   for (int k = 0; k < 10; k++) {
     if (gameMatrix[enemies[k].getY()][enemies[k].getX()] == 1) {
       Serial.println("GAME OVER");
@@ -71,6 +89,8 @@ void Game::playerStepUp() {
     for (int i = 0; i < 10; i++) { 
       enemies[i].incY();
     }
+    // moves down the bonus
+    bonus.incY();
   }
   updateGameMatrix();
 }
