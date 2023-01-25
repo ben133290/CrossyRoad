@@ -5,7 +5,6 @@
 // creates the game object and sets the initial position for the player
 Game::Game() {
   //1 for right -1 for left
-  playerIsImmune = 0;
   scoreBonus = 0;
   playerOrientation = 1;
   isFirstTurn = 1;

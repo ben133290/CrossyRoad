@@ -53,7 +53,7 @@ void updateLEDS() {
         matrix.drawPixel(x, y, matrix.Color333(15, 15, 0));
       }
       if (value == 6) {
-        matrix.drawPixel(x, y, matrix.Color333(0, 15, 1 * (score % 2));
+        matrix.drawPixel(x, y, matrix.Color333(10 * (score % 2), 15, 0));
       }
     }
   }
@@ -78,6 +78,7 @@ void displayGameOver() {
   matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
   matrix.setTextColor(matrix.Color333(0,1,5));
   matrix.setCursor(1, 1);   // next line
+  score = score + game.scoreBonus; // calculate score post boni
   matrix.print("Score");
   matrix.setTextColor(matrix.Color333(0,7,2));
   matrix.setCursor(1, 12);
@@ -94,7 +95,7 @@ void displayGameOver() {
   if (score > 50 && score <= 100) {
     matrix.setTextColor(matrix.Color333(0,7,0));
     if (score == 69) {
-      matrix.print("Nice!")
+      matrix.print("Nice!");
     } else {
       matrix.print("Good!");
     }

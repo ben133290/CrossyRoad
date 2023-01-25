@@ -7,8 +7,6 @@ class Game {
 
   public:
 
-    bool playerIsImmune();
-
     bool checkIfCollision();
 
     bool getGameOver();
