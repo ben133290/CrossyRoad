@@ -2,9 +2,6 @@
 #include <Adafruit_I2CDevice.h>
 #include <Adafruit_I2CRegister.h>
 #include <Adafruit_SPIDevice.h>
-
-#include "Game.h"
-#include "Enemy.h"
 #include <RGBmatrixPanel.h>
 
 // Most of the signal pins are configurable, but the CLK pin has some
@@ -30,9 +27,6 @@
 RGBmatrixPanel matrix(A, B, C, D, CLK, LAT, OE, false);
 
 String inString = "";  // string to hold input
-Game game = Game();
-int score = 0;
-int colorSpeed = 0;
 
 void updateLEDS() {
   unsigned char x, y;
@@ -45,179 +39,60 @@ void updateLEDS() {
       if (value == 1) {
         matrix.drawPixel(x, y, matrix.Color333(15, 15, 15));
       }
-      if (value == 2) {
-        matrix.drawPixel(x, y, matrix.Color333(15, 0, colorSpeed));
-      }
-      if (value == 3) {
-        matrix.drawPixel(x, y, matrix.Color333(0, colorSpeed, 15));
-      }
-      if (value == 4) {
-        matrix.drawPixel(x, y, matrix.Color333(1, 0, 0));
-      }
-      if (value == 5) {
-        matrix.drawPixel(x, y, matrix.Color333(15, 15, 0));
-      }
-      if (value == 6) {
-        matrix.drawPixel(x, y, matrix.Color333(10 * (score % 2), 15, 0));
-      }
     }
   }
 }
 
-// is called when player collides with an enemy
-void displayGameOver() {
-  matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
-  // draw an 'X' in red
-  matrix.drawLine(0, 0, 31, 31, matrix.Color333(7, 0, 0));
-  matrix.drawLine(31, 0, 0, 31, matrix.Color333(7, 0, 0));
-  delay(1000);
-  matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
-  // draw game over
-  matrix.setCursor(3, 2);   // start at top left, with one pixel of spacing
-  matrix.setTextSize(1);    // size 1 == 8 pixels high
-  matrix.setTextColor(matrix.Color333(7,0,0));
-  matrix.print("GAME");
-  matrix.setCursor(6, 11);   // next line
-  matrix.print("OVER");
-  delay(4000);
-  matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
-  matrix.setTextColor(matrix.Color333(0,1,5));
-  matrix.setCursor(1, 1);   // next line
-  score = score + game.scoreBonus; // calculate score post boni
-  matrix.print("Score");
-  matrix.setTextColor(matrix.Color333(0,7,2));
-  matrix.setCursor(1, 12);
-  matrix.print(score);
-  matrix.setCursor(1, 22);
-  if (score <= 25) { 
-    matrix.setTextColor(matrix.Color333(7,0,0));
-    matrix.print("Bad!");
-    }
-  if (score > 25 && score <= 50 ) { 
-    matrix.setTextColor(matrix.Color333(0,0,7));
-    matrix.print("OK!");
-    }
-  if (score > 50 && score <= 100) {
-    matrix.setTextColor(matrix.Color333(0,7,0));
-    if (score == 69) {
-      matrix.print("Nice!");
-    } else {
-      matrix.print("Good!");
-    }
-  }
-  if (score > 100 && score <= 150) {
-    matrix.setTextColor(matrix.Color333(0,7,0));
-    matrix.print('G');
-    matrix.setTextColor(matrix.Color333(7,7,0));
-    matrix.print('R');
-    matrix.setTextColor(matrix.Color333(7,0,0));
-    matrix.print('E');
-    matrix.setTextColor(matrix.Color333(7,0,7));
-    matrix.print('A');
-    matrix.setTextColor(matrix.Color333(0,0,7));
-    matrix.print('T');
-  }
-  if (score > 150 && score <= 200) {
-    matrix.setTextColor(matrix.Color333(0,7,0));
-    matrix.print("Party");
-    delay(500);
-    matrix.setCursor(1, 22);
-    matrix.setTextColor(matrix.Color333(7,7,0));
-    matrix.print("Party");
-    delay(500);
-    matrix.setCursor(1, 22);
-    matrix.setTextColor(matrix.Color333(7,0,0));
-    matrix.print("Party");
-    delay(500);
-    matrix.setCursor(1, 22);
-    matrix.setTextColor(matrix.Color333(7,0,7));
-    matrix.print("Party");
-    delay(500);
-    matrix.setCursor(1, 22);
-    matrix.setTextColor(matrix.Color333(0,0,7));
-    matrix.print("Party");
-  }
-  if (score > 200) {
-    matrix.setTextColor(matrix.Color333(7,7,0));
-    delay(1000);
-    matrix.print('G');
-    delay(1000);
-    matrix.print('O');
-    delay(1000);
-    matrix.print('D');
-    delay(1000);
-    matrix.print('!');
-  }
-  delay(10000);
-  matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
-}
-
-// 'chicken', 32x32px
-const unsigned char chicken [] PROGMEM = {
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-	0x00, 0x00, 0x00, 0x00, 0x00, 0x70, 0x00, 0x00, 0x00, 0x88, 0x00, 0x00, 0x03, 0xa8, 0x02, 0x00, 
-	0x00, 0x88, 0x06, 0x00, 0x00, 0x84, 0x0e, 0x00, 0x00, 0x42, 0x16, 0x00, 0x00, 0x41, 0xe6, 0x00, 
-	0x00, 0x24, 0x04, 0x00, 0x00, 0x24, 0x08, 0x00, 0x00, 0x12, 0x08, 0x00, 0x00, 0x0f, 0xf0, 0x00, 
-	0x00, 0x02, 0x40, 0x00, 0x00, 0x02, 0x40, 0x00, 0x00, 0x02, 0x40, 0x00, 0x00, 0x06, 0xc0, 0x00
+const int logo[1024] = {
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 0, 0, 
+  0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 
+  0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 
+  0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 
+  0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 
+  0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 
+  0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 
+  0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 
+  0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 
+  0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 
+  0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 
+  0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 
+  0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 
+  0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 
+  0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 
+  0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 };
-
-// Array of all bitmaps for convenience. (Total bytes used to store images in PROGMEM = 144)
-//const int epd_bitmap_allArray_LEN = 1;
-//const unsigned char* epd_bitmap_allArray[1] = {
-	//epd_bitmap_chicken
-//};
 
 void displayIntro() {
   matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
-  // draw game over
   matrix.setCursor(1, 3);   // start at top left, with one pixel of spacing
   matrix.setTextSize(1);    // size 1 == 8 pixels high
   matrix.setTextColor(matrix.Color333(7,7,0));
-  matrix.print("Cross the ");
-  matrix.setCursor(1, 20);
-  matrix.print("Road!");
+  matrix.print("UNFOUND");
   delay(1000);
 
-  //display Chicken
+  //display Logo
   matrix.fillRect(0, 0, 32, 32, matrix.Color333(0, 0, 0));
   matrix.drawBitmap(0, 0, chicken, 32, 32, matrix.Color333(7, 7, 7));
-  matrix.drawLine(14, 31, 14, 28, matrix.Color333(15, 15, 0));
-  matrix.drawLine(17, 31, 17, 28, matrix.Color333(15, 15, 0));
-  matrix.drawPixel(13, 31, matrix.Color333(15, 15, 0));
-  matrix.drawPixel(16, 31, matrix.Color333(15, 15, 0));
-  matrix.drawLine(6, 19, 7, 19, matrix.Color333(15, 15, 0));
-  matrix.drawPixel(7, 20, matrix.Color333(15, 0, 0));
   delay(1000);  
 }
 
-bool buttonUpWasPressed = false;
-bool buttonRWasPressed = false;
-bool buttonLWasPressed = false;
-
-void buttonUp() {
-  buttonUpWasPressed = true;
-}
-
-void buttonR() {
-  buttonRWasPressed = true;
-}
-
-void buttonL() {
-  buttonLWasPressed = true;
-}
-
 void setup() {
-  // sets up physical buttons by assigning interupt functions
-  pinMode(ButtonU, INPUT_PULLUP);
-  pinMode(ButtonR, INPUT_PULLUP);
-  pinMode(ButtonL, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(ButtonU), buttonUp, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ButtonR), buttonR, FALLING);
-  attachInterrupt(digitalPinToInterrupt(ButtonL), buttonL, FALLING);
-  
   // Open serial communications and wait for port to open:
   Serial.begin(2000000);
   matrix.begin();
@@ -242,7 +117,7 @@ void loop() {
   updateLEDS();
 
   t = millis();
-  if (t - prevTime > (1000 / enemySpeed)) { 
+  if (t - prevTime > (1000 / enemySpeed)) {
   game.shiftEnemies();
   prevTime = t;
   }
